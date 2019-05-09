@@ -4,11 +4,14 @@ package com.moviesservice.media.Entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
+@Table(name = "media")
 public class Media {
 
     @Id
@@ -20,22 +23,25 @@ public class Media {
     private String description;
     private String type;
 
-    @Size(min = 2, max = 50)
+    @NotNull
+    @Range(min = 1, max = 5)
     private Integer recommendation;
     private String flag;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "job_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private User user;
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @JoinColumn(name = "user_id", nullable = false)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    @JsonIgnore
+//    private User user;
 
-    public Media(String title, String description, String type, Integer recommendation, String flag) {
+
+    public Media(String title, String description, String type, @NotNull @Range(min = 1, max = 5) Integer recommendation, String flag, User user) {
         this.title = title;
         this.description = description;
         this.type = type;
         this.recommendation = recommendation;
         this.flag = flag;
+//        this.user = user;
     }
 
     public Long getId() {
@@ -85,4 +91,12 @@ public class Media {
     public void setFlag(String flag) {
         this.flag = flag;
     }
+
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
 }
