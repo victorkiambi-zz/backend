@@ -2,7 +2,7 @@ package com.moviesservice.media.Controllers;
 
 
 import com.moviesservice.media.Entities.Media;
-import com.moviesservice.media.Exception.BookNotFoundException;
+import com.moviesservice.media.Exception.MediaNotFoundException;
 import com.moviesservice.media.Repository.MediaRepository;
 import com.moviesservice.media.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.awt.print.Book;
 import java.util.List;
 
 @RestController
@@ -34,16 +33,25 @@ public class MediaController {
     }
 
     @GetMapping("/medias/{id}")
-    public Media getMediaById(@PathVariable(value = "id") Long Id) throws BookNotFoundException {
+    public Media getMediaById(@PathVariable(value = "id") String Id) throws MediaNotFoundException {
         return mediaRepository.findById(Id)
-                .orElseThrow(() -> new BookNotFoundException(Id));
+                .orElseThrow(() -> new MediaNotFoundException(Id));
     }
-    // Update a Note
+
+    @GetMapping("/medias/{Id}/{flag}")
+    public Media getMediaByFlag(@PathVariable String Id, @PathVariable String flag)
+            throws MediaNotFoundException {
+        return mediaRepository.findByIdAndFlag(Id,flag)
+                .orElseThrow(() -> new MediaNotFoundException(Id));
+    }
+
+
+    // Update a Media
     @PutMapping("/medias/{id}")
-    public Media updateMedia(@PathVariable(value = "id") Long Id,
-                           @Valid @RequestBody Media mediaDetails) throws BookNotFoundException {
+    public Media updateMedia(@PathVariable(value = "id") String Id,
+                           @Valid @RequestBody Media mediaDetails) throws MediaNotFoundException {
         Media media = mediaRepository.findById(Id)
-                .orElseThrow(() -> new BookNotFoundException(Id));
+                .orElseThrow(() -> new MediaNotFoundException(Id));
         media.setTitle(mediaDetails.getTitle());
         media.setDescription(mediaDetails.getDescription());
         media.setFlag(mediaDetails.getFlag());
@@ -53,11 +61,11 @@ public class MediaController {
         Media updatedMedia = mediaRepository.save(media);
         return updatedMedia;
     }
-    // Delete a Note
+    // Delete a Media
     @DeleteMapping("/medias/{id}")
-    public ResponseEntity<?> deleteMedia(@PathVariable(value = "id") Long Id) throws BookNotFoundException {
+    public ResponseEntity<?> deleteMedia(@PathVariable(value = "id") String Id) throws MediaNotFoundException {
         Media media = mediaRepository.findById(Id)
-                .orElseThrow(() -> new BookNotFoundException(Id));
+                .orElseThrow(() -> new MediaNotFoundException(Id));
         mediaRepository.delete(media);
         return ResponseEntity.ok().build();
     }

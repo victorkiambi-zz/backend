@@ -3,7 +3,9 @@ package com.moviesservice.media.Repository;
 import com.moviesservice.media.Entities.User;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface UserRepository extends PagingAndSortingRepository<User, Long> {
+import java.util.Optional;
 
+public interface UserRepository extends PagingAndSortingRepository<User, String> {
+    Optional<User> findByUsername(String username);
 
 }

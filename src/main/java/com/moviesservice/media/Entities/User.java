@@ -9,28 +9,28 @@ public class User {
 
     @Id
     @GeneratedValue(strategy =GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private String username;
 
     private String password;
 
-    private String token;
+
 
     public User(String username, String password, String token) {
         this.username = username;
         this.password = password;
-        this.token = token;
-    }
-
-    protected User(){
 
     }
-    public Long getId() {
+
+    public User(){
+
+    }
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -50,11 +50,5 @@ public class User {
         this.password = password;
     }
 
-    public String getToken() {
-        return token;
-    }
 
-    public void setToken(String token) {
-        this.token = token;
-    }
 }
