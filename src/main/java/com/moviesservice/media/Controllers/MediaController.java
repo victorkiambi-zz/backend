@@ -21,17 +21,20 @@ public class MediaController {
     @Autowired
     private UserRepository userRepository;
 
+//get movies
 
     @GetMapping("/medias")
     public List<Media> getAllMedia() {
         return (List<Media>) mediaRepository.findAll();
     }
 
+//    post movies
     @PostMapping("/medias")
     public Media createMedia(@Valid @RequestBody Media media) {
         return mediaRepository.save(media);
     }
 
+//    get movies with id
     @GetMapping("/medias/{id}")
     public Media getMediaById(@PathVariable(value = "id") String Id) throws MediaNotFoundException {
         return mediaRepository.findById(Id)
